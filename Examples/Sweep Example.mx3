@@ -1,0 +1,117 @@
+
+/* Simulation setup */
+TableAdd(E_total)
+TableAdd(E_exch)
+Tableadd(E_demag)
+Tableadd(E_zeeman)
+TableAdd(maxTorque)
+TableAdd(LastErr)
+TableAdd(PeakErr)
+TableAdd(B_ext)
+FixDt = 5e-13
+OutputFormat = OVF2_BINARY
+EdgeSmooth = 0
+
+/* Device properties */
+Height := 65
+Diameter := 1500
+Axes_ratio := 2.0
+Nx := 488
+Ny := 160
+
+Nz := 13
+SetGridsize(Nx,Ny,Nz)
+cell_size := 5.0
+nm := 1e-9
+SetCellsize(cell_size*nm,cell_size*nm,cell_size*nm)
+
+/* Geometry */
+geometry := ImageShape("d1500ratio2_DecoupledContactsV2.png")
+SetGeom(geometry)
+/* Physical properties of material */
+Msat = 1400000.0// saturasation magnetisation
+Aex = 3e-11 // exchange stiffness
+alpha = 0.5
+
+/* Starting Condition */
+m = RandomMag()
+B := 0.0
+
+m.LoadFile("X:\\Master Project\\Simulations\\Simulation script\\Examples\\Sweep Example4.out\\m_full000009.ovf")
+
+/* Field Sweep in y-direction */
+for B=0e-3; B<=40e-3; B+=20e-3{
+    B_ext = vector(0,B,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in y-direction */
+for B=42e-3; B<=60e-3; B+=2e-3{
+    B_ext = vector(0,B,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in y-direction */
+for B=58e-3; B>=40e-3; B-=2e-3{
+    B_ext = vector(0,B,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in y-direction */
+for B=20e-3; B>=0e-3; B-=20e-3{
+    B_ext = vector(0,B,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in x-direction */
+for B=0e-3; B<=40e-3; B+=20e-3{
+    B_ext = vector(B,0,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in x-direction */
+for B=45e-3; B<=50e-3; B+=5e-3{
+    B_ext = vector(B,0,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+
+    tablesave()
+
+}
+
+/* Field Sweep in x-direction */
+for B=45e-3; B>=0e-3; B-=15e-3{
+    B_ext = vector(B,0,0)
+    relax()
+    snapshot(m)
+    save(m_full)
+    
+    tablesave()
+
+}

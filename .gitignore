@@ -1,0 +1,5 @@
+*.out
+Reference/
+sequence_mac.py
+*cache*
+Testing/
